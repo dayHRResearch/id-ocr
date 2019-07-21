@@ -128,3 +128,8 @@ dmypy.json
 .vscode
 .DS_Store
 *.dat
+
+example/CMakeFiles
+example/Makefile
+example/*.cmake 
+example/CMakeCache.txt
