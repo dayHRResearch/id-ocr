@@ -37,7 +37,7 @@ $ pyinstaller -F ocr.py
 
 * 原图：
 
-![plot](../example/images/w1.jpg)
+![plot](./images/w1.jpg)
 
 * 1. 二值化。
 
