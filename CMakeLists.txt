@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-project(smile)
+project(id)
 
 find_package(OpenCV REQUIRED)       # 查找OpenCV
 
@@ -13,6 +13,6 @@ INCLUDE_DIRECTORIES(/usr/local/include/opencv4/opencv2)
 # message(STATUS "    libraries: ${OpenCV_LIBS}")
 # message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
-add_executable(smile image_correction.cpp)
-target_link_libraries(smile ${TORCH_LIBRARIES} ${OpenCV_LIBS}) 
-set_property(TARGET smile PROPERTY CXX_STANDARD 17)
+add_executable(id example/image_correction.cpp)
+target_link_libraries(id ${TORCH_LIBRARIES} ${OpenCV_LIBS}) 
+set_property(TARGET id PROPERTY CXX_STANDARD 17)
