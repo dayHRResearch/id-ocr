@@ -129,7 +129,8 @@ dmypy.json
 .DS_Store
 *.dat
 
-example/CMakeFiles
-example/Makefile
-example/*.cmake 
-example/CMakeCache.txt
+# Cmake file
+CMakeFiles
+Makefile
+cmake_install.cmake
+CMakeCache.txt
