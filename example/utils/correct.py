@@ -43,9 +43,9 @@ def morphological_transformation(input_dir):
     # Closed operation (link block)
     closed = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel)
     # # Open Operations (De-noising Points)
-    images = cv2.morphologyEx(closed, cv2.MORPH_OPEN, kernel)
+    image = cv2.morphologyEx(closed, cv2.MORPH_OPEN, kernel)
 
-    return raw_image, images
+    return raw_image, image
 
 
 def correct_image(raw_image, image):
@@ -73,51 +73,36 @@ def correct_image(raw_image, image):
     # Calculates an affine matrix of 2D rotation.
     image = cv2.getRotationMatrix2D((cols / 2, rows / 2), min_area_rect[2], 1)
     # Applies an affine transformation to an image.
-    result_img = cv2.warpAffine(raw_image, image, (cols, rows))
+    correct_image = cv2.warpAffine(raw_image, image, (cols, rows))
 
-    return result_img
+    return correct_image
 
 
-def clip_image(raw_image, image):
-    """
-
-    Args:
-        raw_image: Image streams that need to be tailored.
-        image: Picture Data Stream after Rotation Correction Processing.
-
-    Returns:
-        Clipping picture flow.
-
-    """
-    # Finds contours in a binary image.
-    contours, hierarchy = cv2.findContours(
-        image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Rotating bounding box for calculating maximum contour
-    max_contour = sorted(contours, key=cv2.contourArea, reverse=True)[1]
-    # Computational Minimum Matrix Frame
-    min_area_rect = cv2.minAreaRect(max_contour)
-    box = np.int0(cv2.boxPoints(min_area_rect))
-    clip_image = cv2.drawContours(images.copy(), [box], -1, (0, 0, 255), 3)
-
-    return clip_image
+def findContours_img(original_img, opened):
+    contours, hierarchy = cv2.findContours(opened, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    c = sorted(contours, key=cv2.contourArea, reverse=True)[1]          # 计算最大轮廓的旋转包围盒
+    rect = cv2.minAreaRect(c)
+    angle = rect[2]
+    print("angle",angle)
+    box = np.int0(cv2.boxPoints(rect))
+    draw_img = cv2.drawContours(original_img.copy(), [box], -1, (0, 0, 255), 3)
+    rows, cols = original_img.shape[:2]
+    M = cv2.getRotationMatrix2D((cols / 2, rows / 2), angle, 1)
+    result_img = cv2.warpAffine(original_img, M, (cols, rows))
+    return result_img,draw_img
 
 
 if __name__ == "__main__":
     start = time.time()
-    input_dir = "./images/sfz1.png"
+    input_dir = "./demo.png"
 
-    raw_images, images = morphological_transformation(input_dir)
-    cv2.imshow("morphological transformations image", images)
+    raw_image, image = morphological_transformation(input_dir)
 
-    correct_images = correct_image(raw_images, images)
-    cv2.imshow("correct image", correct_images)
+    correct_image = correct_image(raw_image, image)
 
-    clip_image = clip_image(raw_images, images)
-    cv2.imshow("clip image", clip_image)
-
+    # cv2.imwrite("./new_demo.png", correct_image)xx
+    result , img = findContours_img(raw_image, image)
+    cv2.imshow("img", result)
     cv2.waitKey(0)
-
-    # cv2.imwrite("./results/sfz1.png", images)
 
     print(f"Correct images time use {time.time() - start:.4f} s!")

@@ -13,6 +13,6 @@ INCLUDE_DIRECTORIES(/usr/local/include/opencv4/opencv2)
 # message(STATUS "    libraries: ${OpenCV_LIBS}")
 # message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
-add_executable(id example/image_correction.cpp)
+add_executable(id example/utils/demo.cc)
 target_link_libraries(id ${TORCH_LIBRARIES} ${OpenCV_LIBS}) 
 set_property(TARGET id PROPERTY CXX_STANDARD 17)

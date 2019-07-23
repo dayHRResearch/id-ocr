@@ -1,92 +1,63 @@
-# idCardOcr
-身份证识别  OCR, 本工具主要利用opencv对身份证图片进行预处理然后结合tesseract-ocr 进行识别，
-经采样测试，识别达到90%以上，当然如果图片像素比较高、平整、且较小的倾斜度（此处非旋转度），识别率会更高。
+# text-detection-ctpn
 
-建议使用场景：具有固定采样区域的项目
-
-# 安装
-环境要求：
-
-python 2.7
-
-依赖
-* [tesseract-ocr](https://github.com/sam-ke/tesseract)。 必须安装中文字库（chi_sim.traineddata）
-
-安装好依赖后，编辑文件，根据系统环境（Windows or Linux），修改tesseract可执行文件的全路径：include/functions.py，如下图所示
-
-![plot](./static/images/exe.jpg)
-
-编译
-* 以Linux为例,cd 到项目的根目录，执行如下shell
-
+Scene text detection based on ctpn (connectionist text proposal network). It is implemented in tensorflow. The origin paper can be found [here](https://arxiv.org/abs/1609.03605). Also, the origin repo in caffe can be found in [here](https://github.com/tianzhi0549/CTPN). For more detail about the paper and code, see this [blog](http://slade-ruan.me/2017/10/22/text-detection-ctpn/). If you got any questions, check the issue first, if the problem persists, open a new issue.
+***
+**NOTICE: Thanks to [banjin-xjy](https://github.com/banjin-xjy), banjin and I have reonstructed this repo. The old repo was written based on Faster-RCNN, and remains tons of useless code and dependencies, make it hard to understand and maintain. Hence we reonstruct this repo. The old code is saved in [branch master](https://github.com/eragonruan/text-detection-ctpn/tree/master)**
+***
+# roadmap
+- [x] reonstruct the repo
+- [x] cython nms and bbox utils
+- [x] loss function as referred in paper
+- [x] oriented text connector
+- [x] BLSTM
+***
+# setup
+nms and bbox utils are written in cython, hence you have to build the library first.
 ```shell
-$ pyinstaller -F ocr.py
+cd utils/bbox
+chmod +x make.sh
+./make.sh
 ```
+It will generate a nms.so and a bbox.so in current folder.
+***
+# demo
+- follow setup to build the library 
+- download the ckpt file from [googl drive](https://drive.google.com/file/d/1HcZuB_MHqsKhKEKpfF1pEU85CYy4OlWO/view?usp=sharing) or [baidu yun](https://pan.baidu.com/s/1BNHt_9fiqRPGmEXPaxaFXw)
+- put checkpoints_mlt/ in text-detection-ctpn/
+- put your images in data/demo, the results will be saved in data/res, and run demo in the root 
+```shell
+python ./main/demo.py
+```
+***
+# training
+## prepare data
+- First, download the pre-trained model of VGG net and put it in data/vgg_16.ckpt. you can download it from [tensorflow/models](https://github.com/tensorflow/models/tree/1af55e018eebce03fb61bba9959a04672536107d/research/slim)
+- Second, download the dataset we prepared from [google drive](https://drive.google.com/file/d/1npxA_pcEvIa4c42rho1HgnfJ7tamThSy/view?usp=sharing) or [baidu yun](https://pan.baidu.com/s/1nbbCZwlHdgAI20_P9uw9LQ). put the downloaded data in data/dataset/mlt, then start the training.
+- Also, you can prepare your own dataset according to the following steps. 
+- Modify the DATA_FOLDER and OUTPUT in utils/prepare/split_label.py according to your dataset. And run split_label.py in the root
+```shell
+python ./utils/prepare/split_label.py
+```
+- it will generate the prepared data in data/dataset/
+- The input file format demo of split_label.py can be found in [gt_img_859.txt](https://github.com/eragonruan/text-detection-ctpn/blob/banjin-dev/data/readme/gt_img_859.txt). And the output file of split_label.py is [img_859.txt](https://github.com/eragonruan/text-detection-ctpn/blob/banjin-dev/data/readme/img_859.txt). A demo image of the prepared data is shown below.
+<img src="/data/readme/demo_split.png" width=640 height=480 />
 
-编译好的python可执行程序，编号的文件（ocr）存放在了  ./dist/目录中
-
-使用
-
-./dist/ocr -h
-
-![plot](./static/images/help.jpg)
-
-# 案例展示
-#### 声明：以下图片均是通过搜索引擎获取，本人并不清楚该身份证的真实性，如确实存在此人，请您及时联系，
-我会第一时间删除！
-
-* 原图：
-
-![plot](./images/w1.jpg)
-
-* 1. 二值化。
-
-虽然二值化算法有很多种，但是并没有一种通用的二值化算法达到我们对身份证识别的要求，本案采用二值化算法池的思路，进行遍历试探，
-这样能够有效增加识别的成功率。
-
-![plot](./static/images/process.jpg)
-
-* 2. 图形学处理：膨胀与模糊，主要起到降噪和轮廓增强
-
-![plot](./static/images/process1.jpg)
-
-* 3. 获取身份证号码区域，计算其倾斜角度，如果角度大于10度，则进行透视变换进行校正，然后重复1、2操作
-
-![plot](./static/images/toushi.jpg)
-
-参考：https://blog.csdn.net/xieyan0811/article/details/71106539
-
-
-  找到身份证号码所在的区域后，按照身份证文字排版结构比例进行估算，大致锁定目标区域的坐标，直接忽略其他区域，以防止无效区域对识别过程产生干扰
-
-![plot](./static/images/location.jpg)
-
-
-
-
-* 4. 处理结果
-
-![plot](./static/images/result.jpg)
-
-
-# 优化
-当前该工具存在两个问题
-
-* 执行速度
-* 识别率
-
-目前，即便是商用的身份证识别API服务，也不能做到100%的识别率，我们做的方向是，
-人眼能够识别的，尽最大的努力改进算法能够机器识别。
-有两个思路：针对速度，可以充分利用python的多线程，并行执行可以提高N倍的效率；
-识别率的话，参考tesseract的文档对其字库进行专项训练也可以起到提高识别率的目的。
-
-# 后记
-该工具也是本着学习精神的一种技术探索，不足之处，欢迎大家批评指正！
-
-
-
-
-
-
-
-
+***
+## train 
+Simplely run
+```shell
+python ./main/train.py
+```
+- The model provided in checkpoints_mlt is trained on GTX1070 for 50k iters. It takes about 0.25s per iter. So it will takes about 3.5 hours to finished 50k iterations.
+***
+# some results
+`NOTICE:` all the photos used below are collected from the internet. If it affects you, please contact me to delete them.
+<img src="/data/res/006.jpg" width=320 height=480 /><img src="/data/res/008.jpg" width=320 height=480 />
+<img src="/data/res/009.jpg" width=320 height=480 /><img src="/data/res/010.png" width=320 height=320 />
+***
+## oriented text connector
+- oriented text connector has been implemented, i's working, but still need futher improvement.
+- left figure is the result for DETECT_MODE H, right figure for DETECT_MODE O
+<img src="/data/res/007.jpg" width=320 height=240 /><img src="/data/res_oriented/007.jpg" width=320 height=240 />
+<img src="/data/res/008.jpg" width=320 height=480 /><img src="/data/res_oriented/008.jpg" width=320 height=480 />
+***
