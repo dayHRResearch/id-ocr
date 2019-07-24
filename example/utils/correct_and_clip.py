@@ -20,7 +20,7 @@ import cv2
 
 def main():
     # Gray scale processing of BGR images.
-    image = cv2.imread("demo.png")
+    image = cv2.imread("sfz_back1.png")
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Blurs an image using a Gaussian filter.

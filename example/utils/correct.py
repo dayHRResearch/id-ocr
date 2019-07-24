@@ -79,7 +79,7 @@ def correct_image(raw_image, image):
 
 if __name__ == "__main__":
     start = time.time()
-    input_dir = "./demo.png"
+    input_dir = "./sfz_back1.png"
 
     raw_image, image = morphological_transformation(input_dir)
 
