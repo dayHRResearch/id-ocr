@@ -78,31 +78,15 @@ def correct_image(raw_image, image):
     return correct_image
 
 
-def findContours_img(original_img, opened):
-    contours, hierarchy = cv2.findContours(opened, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    c = sorted(contours, key=cv2.contourArea, reverse=True)[1]          # 计算最大轮廓的旋转包围盒
-    rect = cv2.minAreaRect(c)
-    angle = rect[2]
-    print("angle",angle)
-    box = np.int0(cv2.boxPoints(rect))
-    draw_img = cv2.drawContours(original_img.copy(), [box], -1, (0, 0, 255), 3)
-    rows, cols = original_img.shape[:2]
-    M = cv2.getRotationMatrix2D((cols / 2, rows / 2), angle, 1)
-    result_img = cv2.warpAffine(original_img, M, (cols, rows))
-    return result_img,draw_img
-
-
 if __name__ == "__main__":
     start = time.time()
-    input_dir = "./demo2.png"
+    input_dir = "./demo.png"
 
     raw_image, image = morphological_transformation(input_dir)
 
     correct_image = correct_image(raw_image, image)
-    result_img, draw_img = findContours_img(raw_image, image)
 
     cv2.imwrite("result.png", correct_image)
-    cv2.imshow("d", draw_img)
     cv2.waitKey()
 
     print(f"Correct images time use {time.time() - start:.4f} s!")
