@@ -94,15 +94,15 @@ def findContours_img(original_img, opened):
 
 if __name__ == "__main__":
     start = time.time()
-    input_dir = "./demo.png"
+    input_dir = "./demo2.png"
 
     raw_image, image = morphological_transformation(input_dir)
 
     correct_image = correct_image(raw_image, image)
+    result_img, draw_img = findContours_img(raw_image, image)
 
-    # cv2.imwrite("./new_demo.png", correct_image)xx
-    result , img = findContours_img(raw_image, image)
-    cv2.imshow("img", result)
-    cv2.waitKey(0)
+    cv2.imwrite("result.png", correct_image)
+    cv2.imshow("d", draw_img)
+    cv2.waitKey()
 
     print(f"Correct images time use {time.time() - start:.4f} s!")
