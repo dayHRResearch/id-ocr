@@ -62,62 +62,62 @@ def rotate_card(image):
     Returns:
 
     """
-    # 使用dlib.get_frontal_face_detector识别人脸
+    # use dlib.get_frontal_face_detector face recognition.
     detector = dlib.get_frontal_face_detector()
-    dets = detector(image, 2)  # 使用detector进行人脸检测 dets为返回的结果
-    # 检测人脸的眼睛所在位置
-    predictor = dlib.shape_predictor("../../data/shape_predictor_5_face_landmarks.dat")
+    dets = detector(image, 2)
+    # Detecting the location of the eyes of a face
+    predictor = dlib.shape_predictor("../data/shape_predictor_5_face_landmarks.dat")
+    # get coordinates of human face
     detected_landmarks = predictor(image, dets[0]).parts()
+    # Coordinate value of marking face.
     landmarks = np.array([[p.x, p.y] for p in detected_landmarks])
     corner = cal_inclination_angle(landmarks)
-    # 旋转后的图像
+    # Rotated image.
     image2 = transform.rotate(image, float(corner), clip=False)
     image2 = np.uint8(image2 * 255)
-    # 旋转后人脸位置
+    # Face position after rotation.
     det = detector(image2, 2)
     return image2, det
 
 
-def main(image, threshod=120):
-    # 转正身份证：
+def main(image):
     image2, dets = rotate_card(image)
-    # 提取照片的头像
-    # 在图片中标注人脸，并显示
+    # Pick up the photo's head and mark the face in the picture and display it.
     left = dets[0].left()
     top = dets[0].top()
     right = dets[0].right()
     bottom = dets[0].bottom()
-    # 照片的位置（不怎么精确）
+    # Get the approximate location of the photo.
     width = right - left
     high = top - bottom
     left2 = np.uint(left - 0.3 * width)
     bottom2 = np.uint(bottom + 0.5 * width)
-    # 身份证上人的照片
+    # Intercepting Photo Coordinates of Persons on ID Card
     top2 = np.uint(bottom2 + 2.05 * high)
     right2 = np.uint(left2 + 1.7 * width)
     rectangle = [(left2, bottom2), (top2, right2)]
     imageperson = image2[top2:bottom2, left2:right2, :]
     imageperson = cv2.cvtColor(imageperson, cv2.COLOR_BGR2RGB)
     cv2.imwrite("a.png", imageperson)
-    # 对图像进行处理，转化为灰度图像=>二值图像
+    # The image is processed and transformed into gray image->binary image.
     imagegray = cv2.cvtColor(image2, cv2.COLOR_RGB2GRAY)
     retval, imagebin = cv2.threshold(
-        imagegray, threshod, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)
-    # 将照片去除
+        imagegray, 127, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY)
+    # Remove photos
     imagebin[0:bottom2, left2:-1] = 255
-    # 通过pytesseract库来查看检测效果，但是结果并不是很好
+
     text = pytesseract.image_to_string(imagebin, lang='chi_sim')
     textlist = text.split("\n")
     textdf = pd.DataFrame({"text": textlist})
     textdf["textlen"] = textdf.text.apply(len)
-    # 去除长度《＝1的行
+    # Removal row length < 1.
     textdf = textdf[textdf.textlen > 1].reset_index(drop=True)
     return image2, dets, rectangle, imagebin, textdf
 
 
 # 识别身份证的信息
 image = io.imread("./images/sfz_back2.png")
-image2, dets, rectangle, imagebin, textdf = main(image, threshod=120)
+image2, dets, rectangle, imagebin, textdf = main(image)
 
 print(textdf)
 # # 提取相应的信息
@@ -139,10 +139,10 @@ print(textdf)
 # daynum = re.findall(r"\d+", daynum)[0]
 # print("出生日:", daynum)
 # print("=====================")
-IDnum = textdf.text.values[-1]
-if len(IDnum) > 18:  # 去除不必要的空格
-    IDnum = IDnum.replace(" ", "")
-print("公民身份证号:", IDnum)
+# IDnum = textdf.text.values[-1]
+# if len(IDnum) > 18:
+#     IDnum = IDnum.replace(" ", "")
+# print("公民身份证号:", IDnum)
 # print("=====================")
 # # 获取地址，因为地址可能会是多行
 # desstext = textdf.text.values[3:(textdf.shape[0] - 1)]
