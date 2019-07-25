@@ -40,7 +40,7 @@ def cal_binocular_position(point1, point2):
 
 def cal_inclination_angle(landmarks):
     """ Calculate the tilt angle of the ID card of the image.
-    
+
     Args:
         landmarks: Five Feature Points of Face Detection.
 
@@ -66,7 +66,8 @@ def rotate_card(image):
     detector = dlib.get_frontal_face_detector()
     dets = detector(image, 2)
     # Detecting the location of the eyes of a face
-    predictor = dlib.shape_predictor("../data/shape_predictor_5_face_landmarks.dat")
+    predictor = dlib.shape_predictor(
+        "../data/shape_predictor_5_face_landmarks.dat")
     # get coordinates of human face
     detected_landmarks = predictor(image, dets[0]).parts()
     # Coordinate value of marking face.
@@ -80,7 +81,8 @@ def rotate_card(image):
     return image2, det
 
 
-def main(image):
+def main():
+    image = io.imread("./images/sfz_back2.png")
     image2, dets = rotate_card(image)
     # Pick up the photo's head and mark the face in the picture and display it.
     left = dets[0].left()
@@ -98,7 +100,7 @@ def main(image):
     rectangle = [(left2, bottom2), (top2, right2)]
     imageperson = image2[top2:bottom2, left2:right2, :]
     imageperson = cv2.cvtColor(imageperson, cv2.COLOR_BGR2RGB)
-    cv2.imwrite("a.png", imageperson)
+    # cv2.imwrite("a.png", imageperson)
     # The image is processed and transformed into gray image->binary image.
     imagegray = cv2.cvtColor(image2, cv2.COLOR_RGB2GRAY)
     retval, imagebin = cv2.threshold(
@@ -112,14 +114,11 @@ def main(image):
     textdf["textlen"] = textdf.text.apply(len)
     # Removal row length < 1.
     textdf = textdf[textdf.textlen > 1].reset_index(drop=True)
-    return image2, dets, rectangle, imagebin, textdf
+
+    print(textdf)
 
 
-# 识别身份证的信息
-image = io.imread("./images/sfz_back2.png")
-image2, dets, rectangle, imagebin, textdf = main(image)
-
-print(textdf)
+main()
 # # 提取相应的信息
 # print("姓名:", textdf.text[0])
 # print("=====================")
