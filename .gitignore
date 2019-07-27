@@ -135,3 +135,4 @@ Makefile
 cmake_install.cmake
 CMakeCache.txt
 *.cbp
+*.cbp
