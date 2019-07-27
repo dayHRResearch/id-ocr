@@ -21,30 +21,17 @@
 #include "opencv4/opencv2/highgui.hpp"
 #include "opencv4/opencv2/core.hpp"
 
-#include <iostream>
-
 using namespace cv;
-using namespace std;
 
-static void help()
+/**
+ * print discrete Fourier transform instructions
+ * @author Changyu Liu
+ * @time 2019.7.27
+ */
+static void dftHelp()
 {
-  cout << endl
-       << "This program demonstrated the use of the discrete Fourier transform (DFT). " << endl
-       << "The dft of an image is taken and it's power spectrum is displayed."          << endl
-       << "Usage:"                                                                      << endl
-       << "./discrete_fourier_transform [image_name -- default ../data/lena.jpg]"       << endl;
-}
-
-int main(int argc, char ** argv) {
-  help();
-
-  const char *filename = argc >= 2 ? argv[1] : "../data/lena.jpg";
-
-  Mat I = imread(filename, IMREAD_GRAYSCALE);
-  if (I.empty()) {
-    cout << "Error opening image" << endl;
-    return -1;
-  }
+  printf("\nThis program demonstrated the use of the discrete Fourier transform (DFT).\n"
+         "The dft of an image is taken and it's power spectrum is displayed.\n");
 }
 
 /**
@@ -52,40 +39,54 @@ int main(int argc, char ** argv) {
  * Args:
  *   filename: The input image stream needed to perform the Fourier transform.
  * Returns:
- *
- * */
+ *   success transform return 0, else return -1.
+ * @author Changyu Liu
+ * @time 2019.7.27
+ */
 int fourierTransform(const String& filename){
   Mat image = imread(filename, IMREAD_COLOR);
-  Mat gray_image;
-  cvtColor(image, gray_image, IMREAD_GRAYSCALE);
-  if (gray_image.empty()){
-    lprintf(MSG_ERROR, "Error opening gray_image!\n");
+  if (image.empty()){
+    lprintf(MSG_ERROR, "\tError opening image!\n");
     return -1;
   }
+  Mat gray_image;
+  cvtColor(image, gray_image, IMREAD_GRAYSCALE);
+  if (!gray_image.empty())
+    lprintf(MSG_INFO, "\tConvert gray scale image successful!\n");
 
   // step 1: Expand input gray_image to optimal size.
   Mat padded;
   int height = getOptimalDFTSize(gray_image.rows );
   int width = getOptimalDFTSize(gray_image.cols ); // on the border add zero values
   copyMakeBorder(gray_image, padded, 0, height - gray_image.rows, 0, width - gray_image.cols, BORDER_CONSTANT, Scalar::all(0));
+  if (!padded.empty())
+    lprintf(MSG_INFO, "\tExpand gray_image to optimal size successful!\n");
 
   // step2: Add to the expanded another plane with zeros.
   Mat planes[] = {Mat_<float>(padded), Mat::zeros(padded.size(), CV_32F)};
   Mat complexImage;
   merge(planes, 2, complexImage);
+  if (!complexImage.empty())
+    lprintf(MSG_INFO, "\tAdd to the expanded another plane with zeros successful!\n");
 
   // step3: this way the result may fit in the source matrix
   dft(complexImage, complexImage);
+  if (!complexImage.empty())
+    lprintf(MSG_INFO, "\tCal dft successful!\n");
 
   // step4: compute the magnitude and switch to logarithmic scale
   split(complexImage, planes);                // planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
   magnitude(planes[0], planes[1], planes[0]); // planes[0] = magnitude
   Mat magImage = planes[0];
+  if (!magImage.empty())
+    lprintf(MSG_INFO, "\tcompute the magnitude and switch to logarithmic scale successful!\n");
 
   // step 5: switch to logarithmic scale
   magImage += Scalar::all(1);
   // Calculates x and y coordinates of 2D vectors from their magnitude and angle.
   log(magImage, magImage);
+  if (!magImage.empty())
+    lprintf(MSG_INFO, "\tswitch to logarithmic scale successful!\n");
 
   // step 6: crop rearrange
   // crop the spectrum, if it has an odd number of rows or columns
@@ -107,9 +108,18 @@ int fourierTransform(const String& filename){
   q1.copyTo(tmp);
   q2.copyTo(q1);
   tmp.copyTo(q2);
+  if (!magImage.empty())
+    lprintf(MSG_INFO, "\tcrop rearrange successful!\n");
 
   // step7: normalize gray_image
   normalize(magImage, magImage, 0, 1, NORM_MINMAX);
+  if (!magImage.empty())
+    lprintf(MSG_INFO, "\tImage normalize successful!\n");
+
+  Mat magImg(magImage.size(), CV_8UC1);
+  magImage.convertTo(magImg, CV_8UC1, 255, 0);
+  imwrite(filename, magImage);
+  lprintf(MSG_INFO, "\tImage discrete Fourier transform successful!\n");
 
   return 0;
 }

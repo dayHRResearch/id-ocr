@@ -13,7 +13,7 @@ INCLUDE_DIRECTORIES(/usr/local/include/opencv4/opencv2)
 # message(STATUS "    libraries: ${OpenCV_LIBS}")
 # message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
-add_executable(ocr source/utils/correct/fourier.cc include/correct/fourier.hpp include/log.hpp)
+add_executable(ocr source/utils/correct/fourier.cc include/correct/fourier.hpp include/log.hpp source/utils/correct/rotating.cc include/correct/rotating.hpp)
 target_link_libraries(ocr ${TORCH_LIBRARIES} ${OpenCV_LIBS})
 set_property(TARGET ocr PROPERTY CXX_STANDARD 17)
 set_property(TARGET ocr PROPERTY C_STANDARD 11)

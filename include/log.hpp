@@ -21,13 +21,14 @@
 #ifndef OCR_LOG_HPP
 #define OCR_LOG_HPP
 
-#define MSG_DEBUG 0x01
-#define MSG_INFO 0x02
-#define MSG_ERROR 0x03
+#define MSG_DEBUG  0x01
+#define MSG_INFO   0x02
+#define MSG_WARING 0x03
+#define MSG_ERROR  0x04
 
 #ifndef PRINT_LEVEL
 #define PRINT_LEVEL
-static int print_level = MSG_DEBUG | MSG_INFO | MSG_ERROR;
+static int print_level = MSG_DEBUG | MSG_INFO | MSG_WARING | MSG_ERROR;
 #endif  // PRINT_LEVEL
 
 /**

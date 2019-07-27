@@ -91,10 +91,16 @@
 		<Unit filename="/Users/lcy/code/id-ocr/include/correct/fourier.hpp">
 			<Option target="ocr"/>
 		</Unit>
+		<Unit filename="/Users/lcy/code/id-ocr/include/correct/rotating.hpp">
+			<Option target="ocr"/>
+		</Unit>
 		<Unit filename="/Users/lcy/code/id-ocr/include/log.hpp">
 			<Option target="ocr"/>
 		</Unit>
 		<Unit filename="/Users/lcy/code/id-ocr/source/utils/correct/fourier.cc">
+			<Option target="ocr"/>
+		</Unit>
+		<Unit filename="/Users/lcy/code/id-ocr/source/utils/correct/rotating.cc">
 			<Option target="ocr"/>
 		</Unit>
 		<Unit filename="/Users/lcy/code/id-ocr/CMakeLists.txt">
