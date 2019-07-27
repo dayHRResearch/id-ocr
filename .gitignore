@@ -134,5 +134,7 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 CMakeCache.txt
-*.cbp
-*.cbp
+
+# project file
+ocr
+ocr.cbp
