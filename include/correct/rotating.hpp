@@ -15,8 +15,8 @@
  */
 
 
-#ifndef OCR_ROTATING_HPP
-#define OCR_ROTATING_HPP
+#ifndef OCR_INCLUDE_CORRECT_ROTATING_HPP
+#define OCR_INCLUDE_CORRECT_ROTATING_HPP
 
 #include "../log.hpp"
 
@@ -26,4 +26,4 @@
 
 #include <iostream>
 
-#endif //OCR_ROTATING_HPP
+#endif // OCR_INCLUDE_CORRECT_ROTATING_HPP

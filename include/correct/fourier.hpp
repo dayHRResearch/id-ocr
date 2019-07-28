@@ -15,7 +15,15 @@
  */
 
 
-#ifndef OCR_INCLUDE_FOURIER_HPP
-#define OCR_INCLUDE_FOURIER_HPP
+#ifndef OCR_INCLUDE_CORRECT_FOURIER_HPP
+#define OCR_INCLUDE_CORRECT_FOURIER_HPP
 
-#endif // OCR_INCLUDE_FOURIER_HPP
+#include "../log.hpp"
+
+#include "opencv4/opencv2/imgproc.hpp"
+#include "opencv4/opencv2/highgui.hpp"
+#include "opencv4/opencv2/core.hpp"
+
+#include <iostream>
+
+#endif // OCR_INCLUDE_CORRECT_FOURIER_HPP

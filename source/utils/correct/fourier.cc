@@ -15,13 +15,9 @@
  */
 
 #include "../../../include/correct/fourier.hpp"
-#include "../../../include/log.hpp"
-
-#include "opencv4/opencv2/imgproc.hpp"
-#include "opencv4/opencv2/highgui.hpp"
-#include "opencv4/opencv2/core.hpp"
 
 using namespace cv;
+using namespace std;
 
 /**
  * print discrete Fourier transform instructions

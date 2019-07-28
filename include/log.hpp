@@ -18,8 +18,8 @@
 // Created by lcy on 2019-07-26.
 //
 
-#ifndef OCR_LOG_HPP
-#define OCR_LOG_HPP
+#ifndef OCR_INCLUDE_LOG_HPP
+#define OCR_INCLUDE_LOG_HPP
 
 #define MSG_DEBUG  0x01
 #define MSG_INFO   0x02
@@ -43,4 +43,5 @@ static int print_level = MSG_DEBUG | MSG_INFO | MSG_WARING | MSG_ERROR;
       printf("[%s][%s(%d)]:" format, #level, __FUNCTION__, __LINE__, ##argv); \
   } while (0)
 
-#endif //OCR_LOG_HPP
+
+#endif // OCR_INCLUDE_LOG_HPP
