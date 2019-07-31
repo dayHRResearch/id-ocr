@@ -14,7 +14,7 @@
  * ==============================================================================
  */
 
-#include "../../../include/correct/rotating.hpp"
+#include "../../include/rotating.hpp"
 
 using namespace cv;
 using namespace std;
@@ -24,8 +24,7 @@ using namespace std;
  * @author Changyu Liu
  * @time 2019.7.28
  */
-static void rotatingHelp()
-{
+static void rotatingHelp() {
   printf("\nThis program demonstrated the use of the rotating image.\n"
          "The rotating of an image is taken and it's power spectrum is displayed.\n");
 }
@@ -58,7 +57,7 @@ int rotating(const String &filename) {
   if (!grayImage.empty())
     lprintf(MSG_INFO, "\tExpand image successful!\n");
 
-  Mat groupMats[] = {Mat_<float>(newImage), Mat::zeros(newImage.size(), CV_32F) };
+  Mat groupMats[] = {Mat_<float>(newImage), Mat::zeros(newImage.size(), CV_32F)};
   Mat mergeMat;
   // Combine two pages into a 2-channel mat
   merge(groupMats, 2, mergeMat);
@@ -82,7 +81,7 @@ int rotating(const String &filename) {
   // logarithmic scale
   log(magnitudeMat, magnitudeMat);
   // norm ops
-  normalize(magnitudeMat, magnitudeMat, 0,1, NORM_MINMAX);
+  normalize(magnitudeMat, magnitudeMat, 0, 1, NORM_MINMAX);
   magnitudeMat.convertTo(magnitudeMat, CV_8UC1, 255, 0);
   int cx = magnitudeMat.cols / 2;
   int cy = magnitudeMat.rows / 2;
@@ -125,10 +124,9 @@ int rotating(const String &filename) {
   // }
   double theta = 0.;
   //检测线角度判断
-  for (auto & line : lines) {
+  for (auto &line : lines) {
     double thetaTemp = line[1] * 180 / CV_PI;
-    if (thetaTemp > 0 && thetaTemp < 90)
-    {
+    if (thetaTemp > 0 && thetaTemp < 90) {
       theta = thetaTemp;
       break;
     }

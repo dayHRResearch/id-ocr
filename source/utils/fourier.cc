@@ -14,7 +14,7 @@
  * ==============================================================================
  */
 
-#include "../../../include/correct/fourier.hpp"
+#include "../../include/fourier.hpp"
 
 using namespace cv;
 using namespace std;
@@ -24,8 +24,7 @@ using namespace std;
  * @author Changyu Liu
  * @time 2019.7.27
  */
-static void dftHelp()
-{
+static void dftHelp() {
   printf("\nThis program demonstrated the use of the discrete Fourier transform (DFT).\n"
          "The dft of an image is taken and it's power spectrum is displayed.\n");
 }
@@ -39,9 +38,9 @@ static void dftHelp()
  * @author Changyu Liu
  * @time 2019.7.27
  */
-int fourierTransform(const String& filename){
+int fourierTransform(const String &filename) {
   Mat image = imread(filename, IMREAD_COLOR);
-  if (image.empty()){
+  if (image.empty()) {
     lprintf(MSG_ERROR, "\tError opening image!\n");
     return -1;
   }
@@ -52,9 +51,10 @@ int fourierTransform(const String& filename){
 
   // step 1: Expand input gray_image to optimal size.
   Mat padded;
-  int height = getOptimalDFTSize(gray_image.rows );
-  int width = getOptimalDFTSize(gray_image.cols ); // on the border add zero values
-  copyMakeBorder(gray_image, padded, 0, height - gray_image.rows, 0, width - gray_image.cols, BORDER_CONSTANT, Scalar::all(0));
+  int height = getOptimalDFTSize(gray_image.rows);
+  int width = getOptimalDFTSize(gray_image.cols); // on the border add zero values
+  copyMakeBorder(gray_image, padded, 0, height - gray_image.rows, 0, width - gray_image.cols, BORDER_CONSTANT,
+                 Scalar::all(0));
   if (!padded.empty())
     lprintf(MSG_INFO, "\tExpand gray_image to optimal size successful!\n");
 
@@ -88,8 +88,8 @@ int fourierTransform(const String& filename){
   // crop the spectrum, if it has an odd number of rows or columns
   magImage = magImage(Rect(0, 0, magImage.cols & -2, magImage.rows & -2));
   // rearrange the quadrants of Fourier gray_image  so that the origin is at the gray_image center
-  int cx = magImage.cols/2;
-  int cy = magImage.rows/2;
+  int cx = magImage.cols / 2;
+  int cy = magImage.rows / 2;
   // Create a ROI per quadrant
   Mat q0(magImage, Rect(0, 0, cx, cy));   // Top-Left
   Mat q1(magImage, Rect(cx, 0, cx, cy));  // Top-Right

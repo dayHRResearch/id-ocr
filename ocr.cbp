@@ -47,13 +47,11 @@
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/local/include/opencv4/opencv2"/>
 					<Add directory="/usr/local/include/opencv4"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/../../../../../../include/c++/9.1.0"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/../../../../../../include/c++/9.1.0/x86_64-apple-darwin18"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/../../../../../../include/c++/9.1.0/backward"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/include"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/include-fixed"/>
-					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"/>
-					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/10.0.1/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j4 -f &quot;/Users/lcy/code/id-ocr/Makefile&quot;  VERBOSE=1 ocr"/>
@@ -72,13 +70,11 @@
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/local/include/opencv4/opencv2"/>
 					<Add directory="/usr/local/include/opencv4"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/../../../../../../include/c++/9.1.0"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/../../../../../../include/c++/9.1.0/x86_64-apple-darwin18"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/../../../../../../include/c++/9.1.0/backward"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/include"/>
-					<Add directory="/usr/local/Cellar/gcc/9.1.0/lib/gcc/9/gcc/x86_64-apple-darwin18/9.1.0/include-fixed"/>
-					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"/>
-					<Add directory="/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/10.0.1/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j4 -f &quot;/Users/lcy/code/id-ocr/Makefile&quot;  VERBOSE=1 ocr/fast"/>
@@ -88,19 +84,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/lcy/code/id-ocr/include/correct/fourier.hpp">
+		<Unit filename="/Users/lcy/code/id-ocr/include/cvtColor.hpp">
 			<Option target="ocr"/>
 		</Unit>
-		<Unit filename="/Users/lcy/code/id-ocr/include/correct/rotating.hpp">
+		<Unit filename="/Users/lcy/code/id-ocr/include/fourier.hpp">
 			<Option target="ocr"/>
 		</Unit>
-		<Unit filename="/Users/lcy/code/id-ocr/include/log.hpp">
+		<Unit filename="/Users/lcy/code/id-ocr/include/rotating.hpp">
 			<Option target="ocr"/>
 		</Unit>
-		<Unit filename="/Users/lcy/code/id-ocr/source/utils/correct/fourier.cc">
+		<Unit filename="/Users/lcy/code/id-ocr/source/main.cc">
 			<Option target="ocr"/>
 		</Unit>
-		<Unit filename="/Users/lcy/code/id-ocr/source/utils/correct/rotating.cc">
+		<Unit filename="/Users/lcy/code/id-ocr/source/utils/fourier.cc">
+			<Option target="ocr"/>
+		</Unit>
+		<Unit filename="/Users/lcy/code/id-ocr/source/utils/rotating.cc">
 			<Option target="ocr"/>
 		</Unit>
 		<Unit filename="/Users/lcy/code/id-ocr/CMakeLists.txt">

@@ -18,7 +18,7 @@
 #ifndef OCR_INCLUDE_CORRECT_ROTATING_HPP
 #define OCR_INCLUDE_CORRECT_ROTATING_HPP
 
-#include "../log.hpp"
+#include "log.hpp"
 
 #include "opencv4/opencv2/imgproc.hpp"
 #include "opencv4/opencv2/highgui.hpp"
